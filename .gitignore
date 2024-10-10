@@ -4,4 +4,10 @@ cookies.txt
 config.js
 coverage
 dist
+.nyc_output
 **/.vite
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
