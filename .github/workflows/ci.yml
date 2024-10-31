@@ -55,10 +55,12 @@ jobs:
     needs: build
     permissions:
       id-token: write
-    env:
+    runs-on: ubuntu-latest
+    environment:
       name: production
       url: https://pizza.windypit.com
-    runs-on: ubuntu-latest
+    env:
+      version: ${{needs.build.outputs.version}}
     steps:
       - name: Create OIDC token to AWS
         id: deployment
