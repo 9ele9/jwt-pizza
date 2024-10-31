@@ -58,7 +58,6 @@ jobs:
     env:
       name: production
       url: https://pizza.windypit.com
-      version: ${{needs.build.outputs.version}}
     runs-on: ubuntu-latest
     steps:
       - name: Create OIDC token to AWS
