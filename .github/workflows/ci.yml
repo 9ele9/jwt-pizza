@@ -1,5 +1,4 @@
 name: CI Pipeline
-
 on:
   push:
     branches:
@@ -41,6 +40,7 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
           npm run test:coverage
+          
       - name: Update coverage
         run: |
           coverage_pct=$(grep -o '"pct":[0-9.]*' coverage/coverage-summary.json | head -n 1 | cut -d ':' -f 2)
@@ -48,7 +48,6 @@ jobs:
           curl https://img.shields.io/badge/Coverage-$coverage_pct%25-$color -o coverageBadge.svg
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git pull
           git add .
           git commit -m "generated"
           git push
@@ -70,15 +69,18 @@ jobs:
           audience: sts.amazonaws.com
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/${{ secrets.CI_IAM_ROLE }}
+          
       - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
           name: package
           path: dist/
+          
       - name: Push to AWS S3
         run: |
           echo Deploying $version
           aws s3 cp dist s3://${{ secrets.APP_BUCKET }}/$version --recursive
+          
       - name: Update staging version
         run: |
           # Get the current distribution and update it to use the new version
