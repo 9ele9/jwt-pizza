@@ -56,6 +56,8 @@ jobs:
     permissions:
       id-token: write
     env:
+      name: production
+      url: https://pizza.windypit.com
       version: ${{needs.build.outputs.version}}
     runs-on: ubuntu-latest
     steps:
